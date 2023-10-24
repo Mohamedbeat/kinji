@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Index.css" />
+    <script src="Index.js"></script>
+    <title>Home page</title>
+  </head>
+
+  <body>
+    <nav></nav>
+
+    <div id="msgContainer" class="msgContainer spaan"></div>
+
+    <div class="container">
+      <!-- <input id="Myraise" class="input" type="number" /> -->
+      <input id="Myraise" class="input" type="number" id="Myraise" />
+
+      <div style="display: flex; flex-direction: row">
+        <button class="showmore">
+          <p class="text">Give me money</p>
+        </button>
+
+        <button
+          class="showmore"
+          onclick="dispachMoney('+',document.getElementById('Myraise').value)"
+        >
+          <p class="text">+</p>
+        </button>
+
+        <button
+          class="showmore"
+          onclick="dispachMoney('-',document.getElementById('Myraise').value)"
+        >
+          <p class="text">-</p>
+        </button>
+      </div>
+    </div>
+
+    <div class="offer">
+      <div class="price">
+        <p id="unitPrice">$3.9</p>
+      </div>
+      <div class="nemberof">
+        <p>5</p>
+      </div>
+      <div class="img"></div>
+      <div class="infos">
+        <div class="name">Pizza</div>
+        <div id="howmuch" class="how-much">0</div>
+        <div class="Plus_moin">
+          <div class="plus">
+            <p onclick="handlePizza('+')">+</p>
+          </div>
+          <div class="plus">
+            <p onclick="handlePizza('-')">-</p>
+          </div>
+        </div>
+        <div class="Buy">
+          <p onclick="handleBuy()">Buy</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (
+        localStorage.key("walet2") === null ||
+        localStorage.key("walet2") === undefined
+      ) {
+        localStorage.setItem("walet2", 0);
+      } else {
+        var money = localStorage.getItem("walet2");
+        console.log(money);
+        console.log(localStorage.getItem("walet2"));
+      }
+      document.getElementById("msgContainer").innerHTML =
+        localStorage.getItem("walet2");
+
+      const dispachMoney = (op, amount) => {
+        console.log("amount" + amount);
+
+        let a = parseInt(amount);
+        console.log(a);
+        if (isNaN(a) === true) {
+          return alert("enter valid numebr");
+        } else if (
+          parseInt(document.getElementById("msgContainer").innerHTML) < 0
+        )
+          return alert("cant go under 0");
+        if (op === "+") {
+          moneey = parseInt(document.getElementById("msgContainer").innerHTML);
+
+          console.log(moneey);
+          moneey += a;
+          document.getElementById("msgContainer").innerHTML = moneey;
+          localStorage.setItem("walet2", moneey);
+        } else {
+          let moneey = parseInt(
+            document.getElementById("msgContainer").innerHTML
+          );
+          if (moneey < a) {
+            alert("cant go under 0");
+          } else {
+            console.log(moneey);
+            moneey -= a;
+            document.getElementById("msgContainer").innerHTML = moneey;
+            localStorage.setItem("walet2", moneey);
+          }
+        }
+      };
+
+      const handlePizza = (op) => {
+        var howmuch = document.getElementById("howmuch");
+        var howmuchNumber = parseInt(
+          document.getElementById("howmuch").innerHTML
+        );
+        // console.log(howmuch);
+        if (op === "+") {
+          if (howmuchNumber >= 5) {
+            alert("more than 5 ");
+          } else {
+            howmuch.innerHTML = howmuchNumber + 1;
+          }
+          //   console.log(howmuch);
+        } else {
+          if (howmuchNumber <= 0) {
+            alert("cant go under 0");
+          } else {
+            howmuch.innerHTML = howmuchNumber - 1;
+          }
+        }
+      };
+
+      const handleBuy = () => {
+        var cart = parseInt(document.getElementById("msgContainer").innerHTML);
+        var total =
+          parseInt(document.getElementById("howmuch").innerHTML) *
+          parseFloat(
+            document.getElementById("unitPrice").innerHTML.substring(1, 4)
+          );
+
+        if (total > cart) {
+          return alert("you dont have enough money");
+        } else {
+          document.getElementById("msgContainer").innerHTML = cart - total;
+          localStorage.setItem("walet2", cart - total);
+          console.log(cart);
+          console.log(total);
+        }
+      };
+    </script>
+  </body>
+</html>
